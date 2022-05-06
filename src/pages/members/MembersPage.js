@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { getAllData, getOneItem, deleteItem } from "../../utils";
 import { Link } from "react-router-dom";
+import "./MembersStyle.css"
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
-  const [subs, setSubs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [clicked, setClicked] = useState(false);
+  const [movies, setMovies] = useState([]);
+  const [unWatchedMovies, setUnWatchedMovies] = useState([]);
 
   const membersUrl = "http://localhost:8000/memberswithsubs";
+  const moviesUrl = "http://localhost:8000/moviesWithSubs";
+
 
   const handleDelete = async (url, id) => {
     if (
@@ -14,30 +20,44 @@ const MembersPage = () => {
       )
     ) {
       const { data } = await deleteItem(url, id);
-      console.log(data);
+      alert(data)
     }
   };
+  const handleButton = () => {
+    setClicked(!clicked)
+  }
 
+  // const handleFilter = (e) => {
+  //   const {value} = e.target
+  //   members.map(member => {
+  //     if(value === "") {
+  //       return member;
+  //     } else if(member.name.startsWith(value)) {
+  //       setFilrteredMembers([...filteredMembers.filter(member => member.name.startsWith(value))])
+  //     // filteredMembers = members.filter(x => x.name.startsWith(value)) 
+  //   }
+  // })
+  // }
   useEffect(() => {
-    const fetchData = async (url) => {
-      const { data: members } = await getAllData(url);
+    const fetchData = async (url1, ur2) => {
+      const { data: members } = await getAllData(url1);
+      const { data: movies } = await getAllData(ur2);
       setMembers(members);
-      // movies.map(async (movie) =>
-      //   movie.subscriptions.map(async (sub) => {
-      //     const { data: name } = await getOneItem(
-      //       `${membersUrl}/${movie.subscriptions.memberId}`
-      //     );
-      //     return name;
-      //   })
-      // );
+      setMovies(movies);
     };
-    fetchData(membersUrl);
+    fetchData(membersUrl, moviesUrl);
   }, []);
 
   const memberRep = () => {
-    return members.map((member) => {
+    return members.filter((value) => {
+      if (searchTerm === "") {
+        return value;
+      } else if (value.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return value;
+      }
+    }).map((member) => {
       return (
-        <div
+        <div className="Members"
           style={{ border: "2px solid black", width: "500px" }}
           key={member._id}
         >
@@ -47,18 +67,33 @@ const MembersPage = () => {
           <br />
           <strong>City: </strong>
           {member.city} <br />
-          <span style={{ border: "1px solid black", width: "500px" }}>
+          <div style={{ border: "2px solid blue", width: "200px" }}>
+            <strong>movies the member watched</strong>
+            <button onClick={handleButton} >Subscribe to a new movie</button>
+
+            {
+              // setUnWatchedMovies(...
+              console.log(movies.filter(x => {
+                const newMovies = member.subscriptions.forEach(sub => {
+                  return !x.name.includes(sub.movies.name)
+                });
+                return newMovies
+              }))
+              // )
+            }
+            {clicked ? <div style={{ border: "2px solid red", width: "100px" }}>
+              <select name="movies" >
+
+                <option value="">--Please choose an option--</option>
+              </select>
+            </div> : null}
             <ul>
               {member.subscriptions.map((sub, index) => {
-                return (
-                  <li key={index}>
-                    {((url) => {
-                      return "Movie";
-                    })()}
-                  </li>
-                );
+                return <li key={index} >{sub.movies.name}</li>
               })}
             </ul>
+          </div > <br />
+          <span className="buttons" >
             <Link to={`updatemember/${member._id}`}>
               <button>Edit</button>
             </Link>
@@ -70,14 +105,23 @@ const MembersPage = () => {
               Delete
             </button>
           </span>
+
         </div>
       );
     });
   };
 
   return (
-    <div>
-      <Link to={"addnewmember"}>Add new member</Link>
+    <div className="App" >
+      <Link to={"addnewmember"}>
+        <button>Add member</button>
+      </Link>
+      <br />
+      <input type="text" placeholder="Search by name"
+        name="search" onChange={event => { setSearchTerm(event.target.value) }
+        } />
+
+      <h2>Members</h2>
 
       {memberRep()}
       <br />
@@ -86,3 +130,4 @@ const MembersPage = () => {
 };
 
 export default MembersPage;
+

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getAllData, getOneItem, deleteItem } from "../../utils";
 import { Link } from "react-router-dom";
+import "./MoviesStyle.css"
 const MoviePage = () => {
   const [movies, setMovies] = useState([]);
-  const [subs, setSubs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const moviesUrl = "http://localhost:8000/movieswithsubs";
   const membersUrl = "http://localhost:8000/members";
@@ -23,48 +24,44 @@ const MoviePage = () => {
     const fetchData = async (url) => {
       const { data: movies } = await getAllData(url);
       setMovies(movies);
-      // movies.map(async (movie) =>
-      //   movie.subscriptions.map(async (sub) => {
-      //     const { data: name } = await getOneItem(
-      //       `${membersUrl}/${movie.subscriptions.memberId}`
-      //     );
-      //     return name;
-      //   })
-      // );
     };
     fetchData(moviesUrl);
   }, []);
 
   const moviesRep = () => {
-    return movies.map((movie) => {
+    return movies.filter((value) => {
+      if(searchTerm === "") {
+        return value;
+      } else if (value.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return value;
+      }
+    }).map((movie) => {
       return (
-        <div
-          style={{ border: "2px solid black", width: "500px" }}
+        <div className="Movies"
+          style={{ border: "2px solid black"}}
           key={movie._id}
         >
-          {movie.name} <br />
+          <strong>{`${movie.name}, ${movie.yearPremiered.slice(0,4)}`}</strong>  <br />
           <ul>
             {movie.genres.map((genre, index) => {
               return <li key={index}>{genre}</li>;
             })}
           </ul>{" "}
           <br />
-          <img src={movie.imageUrl} alt="Movie image" width={"100px"} />
-          <span style={{ border: "1px solid black", width: "500px" }}>
+          <img src={movie.imageUrl} alt="Movie image" width={"100px"} /> <br/><br/>
+            <div className="subs" >
+            <strong> subscribed members  </strong>
             <ul>
               {movie.subscriptions.map((sub, index) => {
-                return (
-                  <li key={index}>
-                    {((url) => {
-                      return "Member";
-                    })()}
-                  </li>
-                );
+                return   <li key={index}>{sub.member.name}</li>;
               })}
             </ul>
+            </div> <br/><br/>
+            <span className="buttons"  >
             <Link to={`updatemovie/${movie._id}`}>
               <button>Edit</button>
             </Link>
+            
             <button
               onClick={() =>
                 handleDelete("http://localhost:8000/movies", movie._id)
@@ -72,16 +69,22 @@ const MoviePage = () => {
             >
               Delete
             </button>
-          </span>
+            </span>
+          
         </div>
       );
     });
   };
 
   return (
-    <div>
-      <Link to={"addNewMovie"}>Add new movie</Link>
-
+    <div className="App">
+      <Link to={"addNewMovie"}>
+        <button>Add Movie</button>
+        </Link> <br/> <br/>
+      <input type="text" onChange={e => setSearchTerm(e.target.value)}
+      placeholder="Search by name" name="search" />
+     <br/>
+     <h2>Movies</h2>
       {moviesRep()}
       <br />
     </div>

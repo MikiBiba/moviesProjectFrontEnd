@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { addNewItem } from "../../utils";
+import "./MembersStyle.css"
 
 const AddNewMovie = () => {
   const [member, setMember] = useState({
@@ -20,7 +21,7 @@ const AddNewMovie = () => {
   };
 
   return (
-    <div>
+    <div className="App">
       <h1>Add new member</h1>
       <form onSubmit={handleSubmit}>
         <strong>Name:</strong>{" "}
