@@ -71,21 +71,19 @@ const MembersPage = () => {
             <strong>movies the member watched</strong>
             <button onClick={handleButton} >Subscribe to a new movie</button>
 
-            {
-              // setUnWatchedMovies(...
-              console.log(movies.filter(x => {
-                const newMovies = member.subscriptions.forEach(sub => {
-                  return !x.name.includes(sub.movies.name)
-                });
-                return newMovies
-              }))
-              // )
-            }
-            {clicked ? <div style={{ border: "2px solid red", width: "100px" }}>
-              <select name="movies" >
 
-                <option value="">--Please choose an option--</option>
-              </select>
+            {clicked ? <div>
+              <select name="movies" >
+                {
+                  movies.filter(movie => !member.subscriptions
+                    .map(sub => sub.movies.name)
+                    .includes(movie.name))
+                    .map((mov, index) => <option key={index}> {mov.name} </option>
+                    )
+                }
+              </select> <br />
+              Enter subscription date<input type="text" /> <br />
+              <button>Add</button>
             </div> : null}
             <ul>
               {member.subscriptions.map((sub, index) => {
