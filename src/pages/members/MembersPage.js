@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getAllData, getOneItem, deleteItem } from "../../utils";
 import { Link, useParams } from "react-router-dom";
-import "./MembersStyle.css"
+import { Container, MemberBtn, Members, searchInput, SubInput } from "../styles/MembersStyle.styled";
+import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
+
+
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,7 +63,7 @@ const MembersPage = () => {
       }
     }).map((member) => {
       return (
-        <div className="Members"
+        <Members
           style={{ border: "2px solid black", width: "500px" }}
           key={member._id}
         >
@@ -85,7 +88,7 @@ const MembersPage = () => {
                     )
                 }
               </select> <br />
-              Enter subscription date<input id="subInput" type="text" /> <br />
+              Enter subscription date<SubInput type="text" /> <br />
               <button>Add</button>
             </div> : null}
             <ul>
@@ -96,36 +99,67 @@ const MembersPage = () => {
           </div > <br />
           <span className="buttons" >
             <Link to={`/members/updatemember/${member._id}`}>
-              <button>Edit</button>
+              <MemberBtn>Edit</MemberBtn>
             </Link>
-            <button
+            <MemberBtn
               onClick={() =>
                 handleDelete("http://localhost:8000/members", member._id)
               }
             >
               Delete
-            </button>
+            </MemberBtn>
           </span>
 
-        </div>
+        </Members>
       );
     });
   };
 
   return (
-    <div className="App" >
-      <Link to={"addnewmember"}>
-        <button>Add member</button>
-      </Link>
-      <br />
-      <input id="searchInput" type="text" placeholder="Search by name"
-        name="search" onChange={event => { setSearchTerm(event.target.value) }
-        } />
+    <div >
 
-      <h2>Members</h2>
 
-      {memberRep()}
-      <br />
+      <Nav>
+        <NavLink to="/">
+          <h1>Logo</h1>
+        </NavLink>
+        <Bars />
+        <NavMenu>
+          <NavLink to="/movies" activeStyle>
+            Movies
+          </NavLink>
+          <NavLink to="/members" activeStyle>
+            Members
+          </NavLink>
+          <NavLink to="/" activeStyle>
+            Login
+          </NavLink>
+        </NavMenu>
+        <NavBtn>
+          <NavBtnLink to="/" >Sign in</NavBtnLink>
+        </NavBtn>
+      </Nav>
+
+      <Container>
+
+
+
+
+
+
+        <Link to={"addnewmember"}>
+          <button>Add member</button>
+        </Link>
+        <br />
+        <searchInput type="text" placeholder="Search by name"
+          name="search" onChange={event => { setSearchTerm(event.target.value) }
+          } />
+
+        <h2>Members</h2>
+
+        {memberRep()}
+        <br />
+      </Container>
     </div>
   );
 };

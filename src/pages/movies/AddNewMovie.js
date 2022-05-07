@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { addNewItem } from "../../utils";
+import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
+
 
 const AddNewMovie = () => {
   const [movie, setMovie] = useState({
@@ -22,6 +24,27 @@ const AddNewMovie = () => {
 
   return (
     <div>
+      <Nav>
+        <NavLink to="/">
+          <h1>Logo</h1>
+        </NavLink>
+        <Bars />
+        <NavMenu>
+          <NavLink to="/movies" activeStyle>
+            Movies
+          </NavLink>
+          <NavLink to="/members" activeStyle>
+            Members
+          </NavLink>
+          <NavLink to="/" activeStyle>
+            Login
+          </NavLink>
+        </NavMenu>
+        <NavBtn>
+          <NavBtnLink to="/" >Sign in</NavBtnLink>
+        </NavBtn>
+      </Nav>
+
       <h1>Add new movie</h1>
       <form onSubmit={handleSubmit}>
         Name:{" "}

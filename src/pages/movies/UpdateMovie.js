@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { getOneItem, updateItem } from "../../utils";
+import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
+
 
 const UpdateMovie = () => {
   const { id } = useParams();
@@ -34,7 +36,28 @@ const UpdateMovie = () => {
 
   return (
     <div>
-      <h2>Edit page!</h2>
+      <Nav>
+        <NavLink to="/">
+          <h1>Logo</h1>
+        </NavLink>
+        <Bars />
+        <NavMenu>
+          <NavLink to="/movies" activeStyle>
+            Movies
+          </NavLink>
+          <NavLink to="/members" activeStyle>
+            Members
+          </NavLink>
+          <NavLink to="/" activeStyle>
+            Login
+          </NavLink>
+        </NavMenu>
+        <NavBtn>
+          <NavBtnLink to="/" >Sign in</NavBtnLink>
+        </NavBtn>
+      </Nav>
+
+      <h2>{`Edit ${movie.name}'s data`}</h2>
       Name:{" "}
       <input
         type="text"

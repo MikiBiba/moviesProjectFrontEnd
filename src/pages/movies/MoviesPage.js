@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getAllData, getOneItem, deleteItem } from "../../utils";
 import { Link, useParams } from "react-router-dom";
-import "./MoviesStyle.css"
+import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
+import { Container, searchInput, MemberBtn, SubInput, Movies } from "../styles/MoviesStyle.styled"
 const MoviePage = () => {
   const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,7 +48,7 @@ const MoviePage = () => {
       }
     }).map((movie) => {
       return (
-        <div className="Movies"
+        <Movies
           style={{ border: "2px solid black" }}
           key={movie._id}
         >
@@ -59,7 +60,7 @@ const MoviePage = () => {
           </ul>{" "}
           <br />
           <img src={movie.imageUrl} alt="Movie image" width={"100px"} /> <br /><br />
-          <div className="subs" >
+          <div >
             <strong> subscribed members  </strong>
             <ul>
               {movie.subscriptions.map((sub, index) => {
@@ -69,7 +70,7 @@ const MoviePage = () => {
             </ul>
           </div> <br /><br />
           <span className="buttons"  >
-            <Link to={`updatemovie/${movie._id}`}>
+            <Link to={`/movies/updatemovie/${movie._id}`}>
               <button>Edit</button>
             </Link>
 
@@ -82,24 +83,50 @@ const MoviePage = () => {
             </button>
           </span>
 
-        </div>
+        </Movies >
       );
     });
   };
 
   return (
-    <div className="App">
-      <h2>{movieParamName}</h2>
+    <div>
+      <Nav>
+        <NavLink to="/">
+          <h1>Logo</h1>
+        </NavLink>
+        <Bars />
+        <NavMenu>
+          <NavLink to="/movies" activeStyle>
+            Movies
+          </NavLink>
+          <NavLink to="/members" activeStyle>
+            Members
+          </NavLink>
+          <NavLink to="/" activeStyle>
+            Login
+          </NavLink>
+        </NavMenu>
+        <NavBtn>
+          <NavBtnLink to="/" >Sign in</NavBtnLink>
+        </NavBtn>
+      </Nav>
 
-      <Link to={"addNewMovie"}>
-        <button>Add Movie</button>
-      </Link> <br /> <br />
-      <input type="text" onChange={e => setSearchTerm(e.target.value)}
-        placeholder="Search by name" name="search" />
-      <br />
-      <h2>Movies</h2>
-      {moviesRep()}
-      <br />
+      <Container>
+
+
+        <h2>{movieParamName}</h2>
+
+        <Link to={"addNewMovie"}>
+          <button>Add Movie</button>
+        </Link> <br /> <br />
+        <input type="text" onChange={e => setSearchTerm(e.target.value)}
+          placeholder="Search by name" name="search" />
+        <br />
+        <h2>Movies</h2>
+        {moviesRep()}
+        <br />
+      </Container>
+
     </div>
   );
 };
