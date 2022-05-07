@@ -63,7 +63,8 @@ const MoviePage = () => {
             <strong> subscribed members  </strong>
             <ul>
               {movie.subscriptions.map((sub, index) => {
-                return <li key={index}>  <Link to={`/members/${sub.member.name}`}> {sub.member.name}   </Link></li>;
+                // console.log(sub)
+                return <li key={index}>  <Link to={`/members/${sub.member.name}`}> {sub.member.name} </Link></li>;
               })}
             </ul>
           </div> <br /><br />

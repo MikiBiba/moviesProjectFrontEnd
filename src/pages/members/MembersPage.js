@@ -90,12 +90,12 @@ const MembersPage = () => {
             </div> : null}
             <ul>
               {member.subscriptions.map((sub, index) => {
-                return <li key={index} >  <Link to={`/movies/${sub.movies.name}`} >  {sub.movies.name} </Link>  </li>
+                return <li key={index} >  <Link to={`/movies/${sub.movie.name}`} >  {sub.movie.name} </Link>  </li>
               })}
             </ul>
           </div > <br />
           <span className="buttons" >
-            <Link to={`updatemember/${member._id}`}>
+            <Link to={`/members/updatemember/${member._id}`}>
               <button>Edit</button>
             </Link>
             <button
