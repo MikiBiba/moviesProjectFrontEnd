@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllData, getOneItem, deleteItem } from "../../utils";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./MembersStyle.css"
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
@@ -11,6 +11,8 @@ const MembersPage = () => {
 
   const membersUrl = "http://localhost:8000/memberswithsubs";
   const moviesUrl = "http://localhost:8000/moviesWithSubs";
+
+  const params = useParams();
 
 
   const handleDelete = async (url, id) => {
@@ -27,17 +29,6 @@ const MembersPage = () => {
     setClicked(!clicked)
   }
 
-  // const handleFilter = (e) => {
-  //   const {value} = e.target
-  //   members.map(member => {
-  //     if(value === "") {
-  //       return member;
-  //     } else if(member.name.startsWith(value)) {
-  //       setFilrteredMembers([...filteredMembers.filter(member => member.name.startsWith(value))])
-  //     // filteredMembers = members.filter(x => x.name.startsWith(value)) 
-  //   }
-  // })
-  // }
   useEffect(() => {
     const fetchData = async (url1, ur2) => {
       const { data: members } = await getAllData(url1);
@@ -46,6 +37,7 @@ const MembersPage = () => {
       setMovies(movies);
     };
     fetchData(membersUrl, moviesUrl);
+
   }, []);
 
   const memberRep = () => {
@@ -82,12 +74,12 @@ const MembersPage = () => {
                     )
                 }
               </select> <br />
-              Enter subscription date<input type="text" /> <br />
+              Enter subscription date<input id="subInput" type="text" /> <br />
               <button>Add</button>
             </div> : null}
             <ul>
               {member.subscriptions.map((sub, index) => {
-                return <li key={index} >{sub.movies.name}</li>
+                return <li key={index} >  <Link to={`/movies/${sub.movies.name}`} >  {sub.movies.name} </Link>  </li>
               })}
             </ul>
           </div > <br />
@@ -115,7 +107,7 @@ const MembersPage = () => {
         <button>Add member</button>
       </Link>
       <br />
-      <input type="text" placeholder="Search by name"
+      <input id="searchInput" type="text" placeholder="Search by name"
         name="search" onChange={event => { setSearchTerm(event.target.value) }
         } />
 
