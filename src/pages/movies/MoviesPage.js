@@ -29,11 +29,13 @@ const MoviePage = () => {
       };
       fetchData(moviesUrl);
     } else {
-
+      const fetchData = async (url) => {
+        const { data: movies } = await getAllData(url);
+        setMovies(movies);
+      };
+      fetchData(moviesUrl);
       setSearchTerm(params.name);
-
     }
-
   }, []);
 
   const moviesRep = () => {

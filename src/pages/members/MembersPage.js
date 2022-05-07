@@ -30,13 +30,24 @@ const MembersPage = () => {
   }
 
   useEffect(() => {
-    const fetchData = async (url1, ur2) => {
-      const { data: members } = await getAllData(url1);
-      const { data: movies } = await getAllData(ur2);
-      setMembers(members);
-      setMovies(movies);
-    };
-    fetchData(membersUrl, moviesUrl);
+    if (Object.keys(params).length === 0) {
+      const fetchData = async (url1, ur2) => {
+        const { data: members } = await getAllData(url1);
+        const { data: movies } = await getAllData(ur2);
+        setMembers(members);
+        setMovies(movies);
+      };
+      fetchData(membersUrl, moviesUrl);
+    } else {
+      const fetchData = async (url1, ur2) => {
+        const { data: members } = await getAllData(url1);
+        const { data: movies } = await getAllData(ur2);
+        setMembers(members);
+        setMovies(movies);
+      };
+      fetchData(membersUrl, moviesUrl);
+      setSearchTerm(params.name)
+    }
 
   }, []);
 
