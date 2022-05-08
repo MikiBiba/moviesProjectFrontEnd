@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getAllData, getOneItem, deleteItem } from "../../utils";
 import { Link, useParams } from "react-router-dom";
 import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
-import { Container, searchInput, MemberBtn, SubInput, Movies } from "../styles/MoviesStyle.styled"
+import { Container, SearchInput, MemberBtn, SubInput, Movies } from "../styles/MoviesStyle.styled"
 const MoviePage = () => {
   const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,18 +23,12 @@ const MoviePage = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(params).length === 0) {
-      const fetchData = async (url) => {
-        const { data: movies } = await getAllData(url);
-        setMovies(movies);
-      };
-      fetchData(moviesUrl);
-    } else {
-      const fetchData = async (url) => {
-        const { data: movies } = await getAllData(url);
-        setMovies(movies);
-      };
-      fetchData(moviesUrl);
+    const fetchData = async (url) => {
+      const { data: movies } = await getAllData(url);
+      setMovies(movies);
+    };
+    fetchData(moviesUrl);
+    if (Object.keys(params).length === 1) {
       setSearchTerm(params.name);
     }
   }, []);
@@ -96,13 +90,13 @@ const MoviePage = () => {
         </NavLink>
         <Bars />
         <NavMenu>
-          <NavLink to="/movies" activeStyle>
+          <NavLink to="/movies" >
             Movies
           </NavLink>
-          <NavLink to="/members" activeStyle>
+          <NavLink to="/members" >
             Members
           </NavLink>
-          <NavLink to="/" activeStyle>
+          <NavLink to="/" >
             Login
           </NavLink>
         </NavMenu>
@@ -119,7 +113,7 @@ const MoviePage = () => {
         <Link to={"addNewMovie"}>
           <button>Add Movie</button>
         </Link> <br /> <br />
-        <input type="text" onChange={e => setSearchTerm(e.target.value)}
+        <SearchInput type="text" onChange={e => setSearchTerm(e.target.value)}
           placeholder="Search by name" name="search" />
         <br />
         <h2>Movies</h2>

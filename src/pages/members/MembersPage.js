@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllData, getOneItem, deleteItem } from "../../utils";
 import { Link, useParams } from "react-router-dom";
-import { Container, MemberBtn, Members, searchInput, SubInput } from "../styles/MembersStyle.styled";
+import { Container, MemberBtn, Members, SearchInput, SubInput } from "../styles/MembersStyle.styled";
 import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
 
 
@@ -125,13 +125,13 @@ const MembersPage = () => {
         </NavLink>
         <Bars />
         <NavMenu>
-          <NavLink to="/movies" activeStyle>
+          <NavLink to="/movies" >
             Movies
           </NavLink>
-          <NavLink to="/members" activeStyle>
+          <NavLink to="/members" >
             Members
           </NavLink>
-          <NavLink to="/" activeStyle>
+          <NavLink to="/" >
             Login
           </NavLink>
         </NavMenu>
@@ -151,7 +151,7 @@ const MembersPage = () => {
           <button>Add member</button>
         </Link>
         <br />
-        <searchInput type="text" placeholder="Search by name"
+        <SearchInput type="text" placeholder="Search by name"
           name="search" onChange={event => { setSearchTerm(event.target.value) }
           } />
 

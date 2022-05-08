@@ -42,13 +42,13 @@ const UpdateMovie = () => {
         </NavLink>
         <Bars />
         <NavMenu>
-          <NavLink to="/movies" activeStyle>
+          <NavLink to="/movies" >
             Movies
           </NavLink>
-          <NavLink to="/members" activeStyle>
+          <NavLink to="/members" >
             Members
           </NavLink>
-          <NavLink to="/" activeStyle>
+          <NavLink to="/" >
             Login
           </NavLink>
         </NavMenu>

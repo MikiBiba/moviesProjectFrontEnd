@@ -8,7 +8,7 @@ flex-direction: column;
 font-family: Arial, Helvetica, sans-serif;
 `
 
-export const searchInput = styled.input` 
+export const SearchInput = styled.input` 
   width: 300px;
   height: 40px;
   font-size: 20px;
