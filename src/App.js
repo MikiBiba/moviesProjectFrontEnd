@@ -4,7 +4,6 @@ import LoginPage from "./pages/LoginPage";
 import MoviePage from "./pages/movies/MoviesPage";
 import AddNewMovie from "./pages/movies/AddNewMovie";
 import UpdateMovie from "./pages/movies/UpdateMovie";
-import SubscriptionsPage from "./pages/subscriptions/SubscriptionsPage";
 import MembersPage from "./pages/members/MembersPage";
 import UpdateMemberPage from "./pages/members/UpdateMemberPage";
 import AddMembersPage from "./pages/members/AddMemberPage";

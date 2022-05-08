@@ -2,31 +2,98 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { getAllData } from "../utils";
 import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "./styles/NavBar.styled";
+import {
+  App, Title, Error, InputContainer, SuccesForm,
+  InputPassword, InputText, ButtonContainer,
+  SubmitBtn
+} from "./styles/LoginStyle.styled"
+
 const LoginPage = () => {
-  const [users, setUsers] = useState([]);
-  const url = "http://localhost:8000/users";
-  const handleChange = () => { }
+  const [errorMessages, SetErrorMessages] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [users, setusers] = useState([])
+
+
+  const usersUrl = "http://localhost:8000/users";
+
   useEffect(() => {
-    const fetchData = async () => {
-      const users = await getAllData();
+    const getUsers = async (url) => {
+      const { data: users } = await getAllData(url);
+      setusers(users)
     };
+    getUsers(usersUrl)
+  }, [])
+
+  const renderErrorMessage = (name) => {
+    name === errorMessages.name && (
+      <Error> {errorMessages.message}  </Error>
+    )
+  }
+
+  const handleSubmit = (event) => {
+    //Prevent page reload
+    event.preventDefault();
+
+    var { uname, pass } = document.forms[0];
+
+    // Find user login info
+    const userData = users.find((user) => user.username === uname.value);
+
+    // Compare user info
+    if (userData) {
+      if (userData.password !== pass.value) {
+        // Invalid password
+        setErrorMessages({ name: "pass", message: errors.pass });
+      } else {
+        setIsSubmitted(true);
+      }
+    } else {
+      // Username not found
+      setErrorMessages({ name: "uname", message: errors.uname });
+    }
+  };
+
+  const errors = {
+    uname: "invalid username",
+    pass: "invalid password"
+  };
+
+  const rederFrom = (
+    <LoginForm onSubmit={handleSubmit}>
+      <InputContainer>
+        <label>Username </label>
+        <InputText type="text" name="uname" required />
+        {renderErrorMessage("uname")}
+      </InputContainer>
+      <InputContainer>
+        <label>Password </label>
+        <InputPassword type="password" name="pass" required />
+        {renderErrorMessage("pass")}
+      </InputContainer>
+      <ButtonContainer>
+        <SubmitBtn type="submit" />
+      </ButtonContainer>
+    </LoginForm>
+  )
+
+  useEffect(() => {
   }, []);
 
   return (
-    <div>
+    <App>
       <Nav>
         <NavLink to="/">
           <h1>Logo</h1>
         </NavLink>
         <Bars />
         <NavMenu>
-          <NavLink to="/movies" activeStyle>
+          <NavLink to="/movies" >
             Movies
           </NavLink>
-          <NavLink to="/members" activeStyle>
+          <NavLink to="/members" >
             Members
           </NavLink>
-          <NavLink to="/" activeStyle>
+          <NavLink to="/" >
             Login
           </NavLink>
         </NavMenu>
@@ -35,17 +102,11 @@ const LoginPage = () => {
         </NavBtn>
       </Nav>
 
-
-
-      <Link to={"movies"}>Movies page</Link>
-      <h2>Login page!</h2>
-      <strong> User Name:</strong> <input type="text" onChange={handleChange} />
-      <br />
-      <strong> Password:</strong> <input type="text" onChange={handleChange} />
-      <br />
-      <br />
-      <button>Login </button>
-    </div>
+      <SuccesForm>
+        <Title>Sign In</Title>
+        {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
+      </SuccesForm>
+    </App>
   );
 };
 
