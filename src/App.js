@@ -13,6 +13,7 @@ const App = () => {
   return (
     <div>
       <Routes>
+        // Hello from app.js
         <Route path="/" element={<LoginPage />} />
         <Route path="subscriptions" element={<SubscriptionsPage />} />
         <Route path="members" element={<MembersPage />} />
