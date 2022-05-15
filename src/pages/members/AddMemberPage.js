@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { addNewItem } from "../../utils";
-import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
 
 
 const AddNewMovie = () => {
@@ -23,26 +22,7 @@ const AddNewMovie = () => {
 
   return (
     <div className="App">
-      <Nav>
-        <NavLink to="/">
-          <h1>Logo</h1>
-        </NavLink>
-        <Bars />
-        <NavMenu>
-          <NavLink to="/movies" >
-            Movies
-          </NavLink>
-          <NavLink to="/members" >
-            Members
-          </NavLink>
-          <NavLink to="/" >
-            Login
-          </NavLink>
-        </NavMenu>
-        <NavBtn>
-          <NavBtnLink to="/" >Sign in</NavBtnLink>
-        </NavBtn>
-      </Nav>
+
 
 
       <h1>Add new member</h1>

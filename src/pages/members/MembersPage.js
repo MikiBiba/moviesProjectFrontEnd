@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { getAllData, getOneItem, deleteItem } from "../../utils";
 import { Link, useParams } from "react-router-dom";
 import { Container, MemberBtn, Members, SearchInput, SubInput } from "../styles/MembersStyle.styled";
-import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
 
 
 const MembersPage = () => {
@@ -119,26 +118,7 @@ const MembersPage = () => {
     <div >
 
 
-      <Nav>
-        <NavLink to="/">
-          <h1>Logo</h1>
-        </NavLink>
-        <Bars />
-        <NavMenu>
-          <NavLink to="/movies" >
-            Movies
-          </NavLink>
-          <NavLink to="/members" >
-            Members
-          </NavLink>
-          <NavLink to="/" >
-            Login
-          </NavLink>
-        </NavMenu>
-        <NavBtn>
-          <NavBtnLink to="/" >Sign in</NavBtnLink>
-        </NavBtn>
-      </Nav>
+
 
       <Container>
 

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { getOneItem, updateItem } from "../../utils";
-import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
 
 
 const UpdateMovie = () => {
@@ -36,26 +35,7 @@ const UpdateMovie = () => {
 
   return (
     <div>
-      <Nav>
-        <NavLink to="/">
-          <h1>Logo</h1>
-        </NavLink>
-        <Bars />
-        <NavMenu>
-          <NavLink to="/movies" >
-            Movies
-          </NavLink>
-          <NavLink to="/members" >
-            Members
-          </NavLink>
-          <NavLink to="/" >
-            Login
-          </NavLink>
-        </NavMenu>
-        <NavBtn>
-          <NavBtnLink to="/" >Sign in</NavBtnLink>
-        </NavBtn>
-      </Nav>
+
 
       <h2>{`Edit ${movie.name}'s data`}</h2>
       Name:{" "}

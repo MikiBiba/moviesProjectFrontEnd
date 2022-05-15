@@ -1,20 +1,22 @@
-import { Link } from "react-router-dom";
+import { Navigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { getAllData } from "../utils";
-import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "./styles/NavBar.styled";
 import {
   App, Title, Error, InputContainer, SuccesForm,
   InputPassword, InputText, ButtonContainer,
-  SubmitBtn
+  SubmitBtn,
+  LoginForm,
 } from "./styles/LoginStyle.styled"
 
 const LoginPage = () => {
-  const [errorMessages, SetErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [users, setusers] = useState([])
 
 
   const usersUrl = "http://localhost:8000/users";
+  const authUrl = "http://localhost:8000/auth/login"
 
   useEffect(() => {
     const getUsers = async (url) => {
@@ -30,36 +32,56 @@ const LoginPage = () => {
     )
   }
 
-  const handleSubmit = (event) => {
-    //Prevent page reload
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    var { uname, pass } = document.forms[0];
+    const loginData = {
+      userName: document.forms[0].uname.value,
+      password: document.forms[0].pass.value
+    }
+    console.log(loginData)
+    const resp = await fetch(authUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(loginData)
+    });
 
+    const data = await resp.json();
+
+    console.log(data)
+
+    sessionStorage['accessToken'] = data.accessToken;
+    // navigate("/movies")
+
+    // <Navigate to="movies"></Navigate>
     // Find user login info
-    const userData = users.find((user) => user.username === uname.value);
+    // const userData = users.find((user) => user.userName === uname.value);
 
     // Compare user info
-    if (userData) {
-      if (userData.password !== pass.value) {
-        // Invalid password
-        setErrorMessages({ name: "pass", message: errors.pass });
-      } else {
-        setIsSubmitted(true);
-      }
-    } else {
-      // Username not found
-      setErrorMessages({ name: "uname", message: errors.uname });
-    }
+    //   if (userData) {
+    //     if (userData.password !== pass.value) {
+    //       // Invalid password
+    //       setErrorMessages({ name: "pass", message: errors.pass });
+    //     } else {
+    //       setIsSubmitted(true);
+    //       console.log("Logged in ");
+    //     }
+    //   } else {
+    //     // Username not found
+    //     setErrorMessages({ name: "uname", message: errors.uname });
+    //     console.log("Username isn't correct");
+    //   }
   };
-
   const errors = {
     uname: "invalid username",
     pass: "invalid password"
   };
 
-  const rederFrom = (
-    <LoginForm onSubmit={handleSubmit}>
+  const renderForm = (
+    // <LoginForm>
+    <form onSubmit={handleSubmit}>
       <InputContainer>
         <label>Username </label>
         <InputText type="text" name="uname" required />
@@ -71,42 +93,26 @@ const LoginPage = () => {
         {renderErrorMessage("pass")}
       </InputContainer>
       <ButtonContainer>
-        <SubmitBtn type="submit" />
+        <SubmitBtn value="Submit" type="submit" />
       </ButtonContainer>
-    </LoginForm>
+    </form>
+
   )
 
   useEffect(() => {
   }, []);
 
   return (
-    <App>
-      <Nav>
-        <NavLink to="/">
-          <h1>Logo</h1>
-        </NavLink>
-        <Bars />
-        <NavMenu>
-          <NavLink to="/movies" >
-            Movies
-          </NavLink>
-          <NavLink to="/members" >
-            Members
-          </NavLink>
-          <NavLink to="/" >
-            Login
-          </NavLink>
-        </NavMenu>
-        <NavBtn>
-          <NavBtnLink to="/" >Sign in</NavBtnLink>
-        </NavBtn>
-      </Nav>
+    <div>
+      <App>
+        {renderForm}
 
-      <SuccesForm>
-        <Title>Sign In</Title>
-        {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
-      </SuccesForm>
-    </App>
+        {/* <SuccesForm>
+          <Title>Sign In</Title>
+          {isSubmitted ? <Navigate to="movies"></Navigate> : renderForm}
+        </SuccesForm> */}
+      </App>
+    </div>
   );
 };
 

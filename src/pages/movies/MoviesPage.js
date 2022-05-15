@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getAllData, getOneItem, deleteItem } from "../../utils";
 import { Link, useParams } from "react-router-dom";
-import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "../styles/NavBar.styled";
 import { Container, SearchInput, MemberBtn, SubInput, Movies } from "../styles/MoviesStyle.styled"
 const MoviePage = () => {
   const [movies, setMovies] = useState([]);
@@ -18,19 +17,28 @@ const MoviePage = () => {
       )
     ) {
       const { data } = await deleteItem(url, id);
-      console.log(data);
     }
   };
 
   useEffect(() => {
-    const fetchData = async (url) => {
-      const { data: movies } = await getAllData(url);
-      setMovies(movies);
-    };
-    fetchData(moviesUrl);
-    if (Object.keys(params).length === 1) {
-      setSearchTerm(params.name);
+    // const fetchData = async (url) => {
+    //   const { data: movies } = await getAllData(url);
+    //   setMovies(movies);
+    // };
+    const getAccess = async () => {
+      const accessToken = sessionStorage["accessToken"];
+      const resp = await fetch(moviesUrl, {
+        method: "GET",
+        headers: { 'x-access-token': accessToken },
+      });
+      const moviesData = await resp.json();
+      console.log(moviesData);
+      setMovies(moviesData);
+
     }
+    getAccess()
+    // fetchData(moviesUrl);
+    if (Object.keys(params).length === 1) setSearchTerm(params.name);
   }, []);
 
   const moviesRep = () => {
@@ -84,32 +92,8 @@ const MoviePage = () => {
 
   return (
     <div>
-      <Nav>
-        <NavLink to="/">
-          <h1>Logo</h1>
-        </NavLink>
-        <Bars />
-        <NavMenu>
-          <NavLink to="/movies" >
-            Movies
-          </NavLink>
-          <NavLink to="/members" >
-            Members
-          </NavLink>
-          <NavLink to="/" >
-            Login
-          </NavLink>
-        </NavMenu>
-        <NavBtn>
-          <NavBtnLink to="/" >Sign in</NavBtnLink>
-        </NavBtn>
-      </Nav>
-
       <Container>
-
-
         <h2>{movieParamName}</h2>
-
         <Link to={"addNewMovie"}>
           <button>Add Movie</button>
         </Link> <br /> <br />
